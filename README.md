@@ -139,7 +139,7 @@ Handles real-world challenges:
 
 ---
 
-🏗️ Project Structure
+🏗️ Project Structure (Logical Structure)
 
 AI-Surveillance/
 │
