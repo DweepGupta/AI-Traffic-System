@@ -1,0 +1,8 @@
+CONFIDENCE_THRESHOLD = 0.3
+SPEED_THRESHOLD = 50
+CHALLAN_COOLDOWN = 5
+
+USE_WEBCAM = False
+
+MODEL_PATH = "models/yolov8n.pt"
+VIDEO_PATH = "videos/traffic.mp4"
