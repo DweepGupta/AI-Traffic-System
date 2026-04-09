@@ -16,6 +16,17 @@ This project is an AI-powered smart traffic management system that:
 
 ---
 
+⚙️ Tech Stack
+
+- Python 🐍  
+- OpenCV 👁️  
+- YOLOv8 🤖  
+- Reinforcement Learning (Q-Learning) 🧠  
+- Streamlit 📊  
+- JSON / CSV 📁  
+
+---
+
 🧠 Key Features
 
 🚗 1. Vehicle Detection (YOLOv8)
@@ -195,13 +206,13 @@ AI-Surveillance/
 
 🎮 Controls
 
-Key| Action
-N| Emergency North
-E| Emergency East
-S| Emergency South
-W| Emergency West
-X| Stop Emergency
-Q| Quit
+Key | Action
+N |  Emergency North
+E |  Emergency East
+S |  Emergency South
+W |  Emergency West
+X |  Stop Emergency
+Q |  Quit
 
 ---
 
