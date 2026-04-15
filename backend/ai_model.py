@@ -23,7 +23,6 @@ def choose_action(state):
     if state not in Q:
         Q[state] = {str(a): 0 for a in ACTIONS}
 
-    # 🔥 30% exploration
     if random.random() < 0.3:
         return random.choice(ACTIONS)
 

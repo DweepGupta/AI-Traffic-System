@@ -102,7 +102,7 @@ frames = {}
 siren_playing = False
 emergency_mode = False
 emergency_direction_global = None
-# 🧠 SMART MEMORY (WAIT TIME — NEW)
+# SMART MEMORY (WAIT TIME — NEW)
 waiting_time = {
     "north": 0,
     "east": 0,
@@ -112,7 +112,7 @@ waiting_time = {
 while True:
     key = cv2.waitKey(1) & 0xFF
 
-    # 🚑 START EMERGENCY
+    # START EMERGENCY
     if key == ord('n'):
         emergency_mode = True
         emergency_direction_global = "north"
@@ -141,7 +141,7 @@ while True:
             siren_sound.play(-1)
             siren_playing = True
 
-    # 🛑 STOP EMERGENCY
+    # STOP EMERGENCY
     elif key == ord('x'):
         emergency_mode = False
         stop_emergency()
@@ -149,7 +149,7 @@ while True:
         siren_sound.stop()
         siren_playing = False
 
-    # ❌ EXIT
+    # EXIT
     elif key == ord('q'):
         break
 
@@ -165,7 +165,6 @@ while True:
 
         ret, frame = cap.read()
 
-        # ✅ ADD THIS (SAFE — no crash)
         if frame is not None:
             frame = enhance_frame(frame)
 
@@ -179,7 +178,7 @@ while True:
            frame = frames.get(direction, np.zeros((480,640,3), dtype=np.uint8))
 
         if frame_count % 3 == 0:
-           # ✅ Run YOLO
+           # Run YOLO
            results = model(frame, imgsz=320, conf=0.3, verbose=False)
 
            if results and results[0].boxes is not None:
@@ -190,7 +189,7 @@ while True:
               if boxes is None:
                   boxes = []
         else:
-           # ✅ Reuse previous boxes
+           # Reuse previous boxes
            boxes = prev_boxes.get(direction, [])
 
            if boxes is None or len(boxes) == 0:
@@ -242,21 +241,21 @@ while True:
 
                     fake_plate = "PB" + str(random.randint(10,99)) + "XX" + str(random.randint(1000,9999))
 
-                    # Overspeed (only if actually fast)
+                    # Overspeed
                     if speed > SPEED_THRESHOLD:
                         add_challan(fake_plate, "Over Speeding", vehicle_type, vehicle_color, f"{speed} speed units")
                         last_challan_time = current_time
 
-                    # Helmet (independent)
+                    # Helmet
                     if cls_name == "motorcycle" and random.random() < 0.4:
                         add_challan(fake_plate, "No Helmet", vehicle_type, vehicle_color, "-")
                         last_challan_time = current_time
 
-                    # Seatbelt (independent)
+                    # Seatbelt
                     if cls_name == "car" and random.random() < 0.2:
                         add_challan(fake_plate, "No Seatbelt", vehicle_type, vehicle_color, "-")
                         last_challan_time = current_time
-        # 🧠 WEIGHTED TRAFFIC (NEW)
+        #  WEIGHTED TRAFFIC
         weighted_count = (
             vehicle_type_count["car"] * 1 +
             vehicle_type_count["motorcycle"] * 0.7 +
@@ -265,7 +264,7 @@ while True:
             vehicle_type_count["bicycle"] * 0.3
         )
 
-        # ✅ STEP 5 (AI STABILIZATION — DO NOT MOVE)
+        # AI STABILIZATION
         final_count = enhance_count(direction, weighted_count)
 
         traffic_data[direction] = int(final_count)
@@ -273,8 +272,7 @@ while True:
     if frame_count % 30 == 0:
         print(traffic_data)
 
-    # 🧠 FAIRNESS BOOST (NEW — DO NOT REMOVE OLD LOGIC)
-
+    #  FAIRNESS BOOST
     for d in waiting_time:
         if 'current_signal' in locals():
             if d != current_signal:
@@ -282,14 +280,13 @@ while True:
             else:
                 waiting_time[d] = 0
         else:
-            # first iteration → no reset
             waiting_time[d] += 0
 
-    # Add fairness bonus
+    # Fairness bonus
     for d in traffic_data:
         traffic_data[d] += min(waiting_time[d] * 0.6,8)
 
-    # ✅ STEP 2 — convert to int
+    # Convert to int
     for d in traffic_data:
         traffic_data[d] = int(traffic_data[d])
     
@@ -315,7 +312,7 @@ while True:
     cv2.putText(east, "EAST", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,255,255), 2)
     cv2.putText(south, "SOUTH", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,255,255), 2)
     cv2.putText(west, "WEST", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,255,255), 2)
-    # 🚑 EMERGENCY DISPLAY (PER CAMERA — NO OVERLAP)
+    # EMERGENCY DISPLAY (PER CAMERA)
     if emergency_mode and emergency_direction_global:
 
         if emergency_direction_global == "north":
@@ -390,7 +387,7 @@ while True:
     # Background box
     h, w, _ = main_frame.shape
 
-    panel_width = int(w * 0.20)  # 🔥 20% only
+    panel_width = int(w * 0.20)
 
     # Left panel
 
@@ -488,8 +485,6 @@ while True:
             # Proper red countdown
             green_remaining = max(0, int(round(remaining_time)))
 
-            # Correct red timer (NO SKIP)
-            green_remaining = max(0, int(remaining_time))
             yellow_time = 2
 
             cycle_time = green_remaining + yellow_time

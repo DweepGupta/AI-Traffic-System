@@ -3,7 +3,7 @@ import time
 import json
 import os
 
-# 🚑 EMERGENCY MODE (UPDATED)
+# EMERGENCY MODE
 emergency_mode = False
 emergency_direction = None
 saved_state = {}
@@ -90,7 +90,6 @@ def stop_emergency():
 
         global paused_duration, pause_start
 
-        # ✅ ADD THIS BLOCK
         if pause_start is not None:
             paused_duration += time.time() - pause_start
             pause_start = None
@@ -111,9 +110,8 @@ def decide_next_green(traffic_data):
     wait = waiting_time[next_dir]
 
     # Smart time calculation
-    # 🔥 STRONGER ADAPTIVE LOGIC
+    # ADAPTIVE LOGIC
     base_time = 8
-    # 🔥 REALISTIC TRAFFIC SCALING
     if traffic < 5:
         traffic_factor = traffic * 1.2
     elif traffic < 15:
@@ -127,14 +125,13 @@ def decide_next_green(traffic_data):
     # Clamp values
     default_time = max(8, min(int(default_time), 25))
 
-    # NEW AI (safe)
     try:
         state = get_state(traffic_data)
         ai_time = choose_action(state)
         print("AI TIME:", ai_time)
         print("TRAFFIC:", traffic_data)
 
-        # 🔥 Blend logic + AI (VERY IMPORTANT)
+        # Blend logic + AI
         new_time = int(0.3 * default_time + 0.7 * ai_time)
 
     except:
@@ -159,7 +156,7 @@ def update_signal(traffic_data):
 
     current_time = time.time()
     
-    # 🚑 EMERGENCY HOLD MODE
+    # EMERGENCY HOLD MODE
     if emergency_mode:
         save_signal_status(current_green, green_time, start_time)
         return current_green, 0, "GREEN"
@@ -210,7 +207,7 @@ def update_signal(traffic_data):
         yellow_start_time = current_time
         return current_green, 0, "YELLOW"
     
-    # 🔥 AI LEARNING (safe)
+    # AI LEARNING
     try:
         state = get_state(traffic_data)
         reward = -sum(traffic_data.values())

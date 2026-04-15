@@ -9,7 +9,7 @@ prev_counts = {
 }
 
 
-# 🌙 NIGHT + SHADOW FIX
+# NIGHT + SHADOW
 def enhance_frame(frame):
     # Improve brightness (night)
     frame = cv2.convertScaleAbs(frame, alpha=1.2, beta=20)
@@ -24,7 +24,7 @@ def enhance_frame(frame):
     return frame
 
 
-# 🚗 OCCLUSION FIX
+# OCCLUSION
 def enhance_count(direction, current_count):
     prev = prev_counts.get(direction, 0)
 

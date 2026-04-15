@@ -101,7 +101,7 @@ def dashboard():
 
         time_left = signal_data.get("time_left", 0)
 
-        # 🚑 EMERGENCY OVERRIDE
+        # EMERGENCY OVERRIDE
         if isinstance(time_left, int) and time_left > 1000:
             st.markdown(
                "<h2 style='color:red;'>🚑 EMERGENCY</h2>",
@@ -139,7 +139,6 @@ def dashboard():
         if df.empty:
             st.warning("No data available yet")
         else:
-            # Clean data
             df = df.dropna(subset=["Date", "Time"])
             df["Date"] = pd.to_datetime(df["Date"], errors="coerce")
             df = df.dropna(subset=["Date"])
